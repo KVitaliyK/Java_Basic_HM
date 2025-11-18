@@ -3,7 +3,7 @@ package hm3;
 public class Main {
     public static void main(String[] args) {
 
-        Pet dog = new Pet("dog", "Rock", 5, 75, new String[]{"eat", "drink", "sleep"});
+        Pet dog = new Pet(Species.DOG, "Rock", 5, 75, new String[]{"eat", "drink", "sleep"});
 
         Human mother = new Human("Jane", "Karleone", 1980);
         Human father = new Human("Vito", "Karleone", 1975);
@@ -12,10 +12,15 @@ public class Main {
         family.setPet(dog);
 
         String[][] schedule = {
-                {"Monday", "Gym"},
-                {"Tuesday", "Programming"},
-                {"Wednesday", "Cinema"}
+                {DayOfWeek.MONDAY.name(), "Gym"},
+                {DayOfWeek.TUESDAY.name(), "Programming"},
+                {DayOfWeek.WEDNESDAY.name(), "Cinema"},
+                {DayOfWeek.THURSDAY.name(), "English"},
+                {DayOfWeek.FRIDAY.name(), "Football"},
+                {DayOfWeek.SATURDAY.name(), "Rest"},
+                {DayOfWeek.SUNDAY.name(), "Family Day"}
         };
+
 
         Human child = new Human("Michael", "Karleone", 2005, 90, schedule);
 
@@ -32,5 +37,22 @@ public class Main {
 
         System.out.println("\n--- Child Info ---");
         System.out.println(child);
+
+        System.out.println("\n HM4");
+        System.out.println("\n--- Створюємо багато Human для запуску GC ---");
+
+
+        for (int i = 0; i < 10_000; i++) {
+            new Human("Test" + i, "User", 2000 + (i % 20));
+            if (i % 500_000 == 0) {
+                System.out.println("Створено: " + i);
+            }
+        }
+
+        System.out.println("Генерація завершена. Очікуємо роботу GC...\n");
+
+        System.gc();
+
     }
 }
+
