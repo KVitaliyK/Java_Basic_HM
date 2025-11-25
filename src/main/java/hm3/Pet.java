@@ -3,8 +3,8 @@ package hm3;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Pet {
-    private Species species;
+public abstract class Pet {
+    private Species species = Species.UNKNOWN;
     private String nickname;
     private int age;
     private int trickLevel;
@@ -25,9 +25,7 @@ public class Pet {
         System.out.println("Я їм!");
     }
 
-    public void respond() {
-        System.out.printf("Привіт, господарю. Я - %s!%n", nickname);
-    }
+    public abstract void respond();
 
     public void foul() {
         System.out.println("Потрібно добре прибрати за собою!");
