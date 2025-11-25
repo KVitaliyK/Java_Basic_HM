@@ -3,8 +3,10 @@ package hm3.Animals;
 import hm3.Pet;
 import hm3.Species;
 
+import java.util.Set;
+
 public class RoboCat extends Pet implements Foulable{
-    public RoboCat(String nickname, int age, int trickLevel, String[] habits) {
+    public RoboCat(String nickname, int age, int trickLevel, Set<String> habits) {
         super(Species.ROBO_CAT, nickname, age, trickLevel, habits);
     }
 

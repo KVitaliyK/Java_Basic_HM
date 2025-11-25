@@ -3,8 +3,10 @@ package hm3.Animals;
 import hm3.Pet;
 import hm3.Species;
 
+import java.util.Set;
+
 public class Dog extends Pet implements Foulable {
-    public Dog(String nickname, int age, int trickLevel, String[] habits) {
+    public Dog(String nickname, int age, int trickLevel, Set<String> habits) {
         super(Species.DOG, nickname, age, trickLevel, habits);
     }
 
