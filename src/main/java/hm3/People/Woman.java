@@ -8,12 +8,12 @@ public final class Woman extends Human {
         super();
     }
 
-    public Woman(String name, String surname, int year) {
-        super(name, surname, year);
+    public Woman(String name, String surname, int day, int month, int year) {
+        super(name, surname, day, month, year);
     }
 
-    public Woman(String name, String surname, int year, int iq, String[][] schedule) {
-        super(name, surname, year, iq, schedule);
+    public Woman(String name, String surname, int day, int month, int year, int iq, String[][] schedule) {
+        super(name, surname, day, month, year, iq, schedule);
     }
 
     @Override

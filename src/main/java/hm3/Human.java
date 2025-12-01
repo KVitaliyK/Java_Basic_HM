@@ -1,28 +1,33 @@
 package hm3;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Objects;
 
 public class Human {
     private String name;
     private String surname;
-    private int year;
+    private long birthDate;
     private int iq;
     private String[][] schedule;
     private Family family;
 
     public Human() {}
 
-    public Human(String name, String surname, int year) {
+    public Human(String name, String surname, int day, int month, int year) {
         this.name = name;
         this.surname = surname;
-        this.year = year;
+        setBirthDate(day, month, year);
     }
 
-    public Human(String name, String surname, int year, int iq, String[][] schedule) {
+    public Human(String name, String surname, int day, int month, int year, int iq, String[][] schedule) {
         this.name = name;
         this.surname = surname;
-        this.year = year;
+        setBirthDate(day, month, year);
         this.iq = iq;
         this.schedule = schedule;
     }
@@ -55,8 +60,13 @@ public class Human {
     public String getSurname() { return surname; }
     public void setSurname(String surname) { this.surname = surname; }
 
-    public int getYear() { return year; }
-    public void setYear(int year) { this.year = year; }
+    public long getBirthDate() { return birthDate; }
+    public void setBirthDate(int day, int month, int year) {
+        LocalDate date = LocalDate.of(year, month, day);
+        this.birthDate = date.atStartOfDay(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli();
+    }
 
     public int getIq() { return iq; }
     public void setIq(int iq) { this.iq = iq; }
@@ -67,10 +77,25 @@ public class Human {
     public Family getFamily() { return family; }
     public void setFamily(Family family) { this.family = family; }
 
+
+    public String describeAge() {
+        LocalDate birth = Instant.ofEpochMilli(birthDate)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalDate now = LocalDate.now();
+        Period p = Period.between(birth, now);
+        return String.format("%d років, %d місяців, %d днів", p.getYears(), p.getMonths(), p.getDays());
+    }
+
     @Override
     public String toString() {
-        return String.format("Human{name='%s', surname='%s', year=%d, iq=%d, schedule=%s}",
-                name, surname, year, iq, Arrays.deepToString(schedule));
+        LocalDate birth = Instant.ofEpochMilli(birthDate)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String formattedDate = birth.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+        return String.format("Human{name='%s', surname='%s', birthDate=%s, iq=%d, schedule=%s}",
+                name, surname, formattedDate, iq, Arrays.deepToString(schedule));
     }
 
     @Override
@@ -78,14 +103,14 @@ public class Human {
         if (this == o) return true;
         if (!(o instanceof Human)) return false;
         Human human = (Human) o;
-        return year == human.year &&
+        return birthDate == human.birthDate &&
                 Objects.equals(name, human.name) &&
                 Objects.equals(surname, human.surname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, year);
+        return Objects.hash(name, surname, birthDate);
     }
 
 
