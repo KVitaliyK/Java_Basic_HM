@@ -1,6 +1,7 @@
 package hm3.Dao;
 
 import hm3.*;
+import hm3.Exeptions.FamilyOverflowException;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -40,7 +41,7 @@ public class FamilyService {
         }
 
         for (int i = 0; i < families.size(); i++) {
-            System.out.printf("%d: %s%n", i, families.get(i));
+            System.out.printf("%d: %s%n", i, families.get(i).prettyFormat());
         }
     }
 
@@ -53,7 +54,7 @@ public class FamilyService {
             }
         }
 
-        result.forEach(System.out::println);
+        result.forEach(f -> System.out.println(f.prettyFormat()));
         return result;
     }
 
@@ -66,7 +67,7 @@ public class FamilyService {
             }
         }
 
-        result.forEach(System.out::println);
+        result.forEach(f -> System.out.println(f.prettyFormat()));
         return result;
     }
 
@@ -94,8 +95,10 @@ public class FamilyService {
     }
 
 
-
     public Family bornChild(Family family, String boyName, String girlName) {
+        if (family.countFamily() >= 4) {
+            throw new FamilyOverflowException("Сім'я перевищує допустиму кількість членів. Неможливо народити дитину.");
+        }
 
         boolean isBoy = Math.random() < 0.5;
         String name = isBoy ? boyName : girlName;
@@ -117,10 +120,15 @@ public class FamilyService {
     }
 
     public Family adoptChild(Family family, Human child) {
+        if (family.countFamily() >= 6) {
+            throw new FamilyOverflowException("Сім'я перевищує допустиму кількість членів. Неможливо усиновити дитину.");
+        }
+
         family.addChild(child);
         familyDao.saveFamily(family);
         return family;
     }
+
 
     public void deleteAllChildrenOlderThen(int age) {
         for (Family family : familyDao.getAllFamilies()) {

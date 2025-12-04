@@ -102,4 +102,17 @@ public abstract class Pet {
         System.out.println("Видаляється об'єкт Pet: " + toString());
         super.finalize();
     }
+
+
+    public String prettyFormat() {
+        return String.format(
+                "{species=%s, nickname='%s', age=%d, trickLevel=%d, habits=%s}",
+                species,
+                nickname,
+                age,
+                trickLevel,
+                Arrays.toString(habits)
+        );
+    }
+
 }

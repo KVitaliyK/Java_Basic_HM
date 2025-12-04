@@ -119,4 +119,32 @@ public class Human {
         System.out.println("Видаляється об'єкт Human: " + toString());
         super.finalize();
     }
+
+    public String prettyFormat() {
+        // Дата
+        LocalDate birth = Instant.ofEpochMilli(birthDate)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String formattedDate = birth.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+        // Розклад
+        String scheduleStr;
+        if (schedule == null) {
+            scheduleStr = "null";
+        } else {
+            StringBuilder sb = new StringBuilder("{");
+            for (int i = 0; i < schedule.length; i++) {
+                sb.append(schedule[i][0]).append("=").append(schedule[i][1]);
+                if (i < schedule.length - 1) sb.append(", ");
+            }
+            sb.append("}");
+            scheduleStr = sb.toString();
+        }
+
+        return String.format(
+                "{name='%s', surname='%s', birthDate='%s', iq=%d, schedule=%s}",
+                name, surname, formattedDate, iq, scheduleStr
+        );
+    }
+
 }

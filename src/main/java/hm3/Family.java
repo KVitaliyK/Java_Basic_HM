@@ -92,4 +92,47 @@ public class Family {
         System.out.println("Видаляється об'єкт Family: " + toString());
         super.finalize();
     }
+
+    public String prettyFormat() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("family:\n");
+
+        // mother
+        sb.append("\tmother: ")
+                .append(mother != null ? mother.prettyFormat() : "null")
+                .append("\n");
+
+        // father
+        sb.append("\tfather: ")
+                .append(father != null ? father.prettyFormat() : "null")
+                .append("\n");
+
+        // children
+        sb.append("\tchildren:\n");
+        if (children == null || children.length == 0) {
+            sb.append("\t\t(no children)\n");
+        } else {
+            for (Human child : children) {
+                String gender = child.getClass().getSimpleName().toLowerCase(); // man/girl/woman/boy
+                sb.append("\t\t")
+                        .append(gender)
+                        .append(": ")
+                        .append(child.prettyFormat())
+                        .append("\n");
+            }
+        }
+
+        // pets
+        sb.append("\tpets: ");
+        if (pet == null) {
+            sb.append("[]");
+        } else {
+            sb.append("[")
+                    .append(pet.prettyFormat())
+                    .append("]");
+        }
+
+        return sb.toString();
+    }
+
 }

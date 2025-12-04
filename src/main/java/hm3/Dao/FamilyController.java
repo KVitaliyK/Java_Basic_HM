@@ -1,6 +1,7 @@
 package hm3.Dao;
 
-import hm3.*;;
+import hm3.*;
+import hm3.Exeptions.FamilyOverflowException;
 
 import java.util.List;
 
@@ -47,14 +48,24 @@ public class FamilyController {
     }
 
 
-
     public Family bornChild(Family family, String boyName, String girlName) {
-        return familyService.bornChild(family, boyName, girlName);
+        try {
+            return familyService.bornChild(family, boyName, girlName);
+        } catch (FamilyOverflowException e) {
+            System.out.println("Помилка: " + e.getMessage());
+            return family;
+        }
     }
 
     public Family adoptChild(Family family, Human child) {
-        return familyService.adoptChild(family, child);
+        try {
+            return familyService.adoptChild(family, child);
+        } catch (FamilyOverflowException e) {
+            System.out.println("Помилка: " + e.getMessage());
+            return family;
+        }
     }
+
 
     public void deleteAllChildrenOlderThen(int age) {
         familyService.deleteAllChildrenOlderThen(age);
