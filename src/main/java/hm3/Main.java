@@ -172,6 +172,8 @@ public class Main {
                 System.out.println("7. Видалити сім'ю за індексом");
                 System.out.println("8. Редагувати сім'ю");
                 System.out.println("9. Видалити всіх дітей старше заданого віку");
+                System.out.println("10. Зберегти дані у файл");
+                System.out.println("11. Завантажити дані з файлу");
                 System.out.println("0. Вихід");
                 System.out.print("Виберіть команду: ");
 
@@ -270,6 +272,14 @@ public class Main {
                         familyController.deleteAllChildrenOlderThen(age);
                         System.out.println("Діти старше " + age + " років видалені.");
                     }
+                    case 10 -> {
+                        String filePath = promptString(scanner, "Введіть шлях для збереження файлу: ");
+                        if (familyDao instanceof CollectionFamilyDao dao) dao.saveToFile(filePath);
+                    }
+                    case 11 -> {
+                        String filePath = promptString(scanner, "Введіть шлях для завантаження файлу: ");
+                        if (familyDao instanceof CollectionFamilyDao dao) dao.loadFromFile(filePath);
+                    }
                     case 0 -> {
                         System.out.println("Вихід з програми...");
                         return;
@@ -286,6 +296,11 @@ public class Main {
                 System.out.println("Сталася помилка: " + e.getMessage());
             }
         }
+    }
+
+    private static String promptString(Scanner scanner, String message) {
+        System.out.print(message);
+        return scanner.nextLine().trim();
     }
 
     private static int readInt(Scanner scanner, String message) {

@@ -1,9 +1,10 @@
 package hm3;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Family {
+public class Family implements Serializable {
     private Human mother;
     private Human father;
     private Human[] children;

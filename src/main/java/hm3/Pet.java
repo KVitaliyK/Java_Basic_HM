@@ -1,9 +1,10 @@
 package hm3;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
-public abstract class Pet {
+public abstract class Pet implements Serializable {
     private Species species = Species.UNKNOWN;
     private String nickname;
     private int age;

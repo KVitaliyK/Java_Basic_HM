@@ -170,4 +170,10 @@ public class FamilyService {
             familyDao.saveFamily(f);
         }
     }
+
+    public void loadData(List<Family> families) {
+        if (familyDao instanceof CollectionFamilyDao dao) {
+            dao.loadData(families);
+        }
+    }
 }

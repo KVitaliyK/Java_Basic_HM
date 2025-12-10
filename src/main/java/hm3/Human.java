@@ -1,5 +1,6 @@
 package hm3;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
@@ -8,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Human {
+public class Human implements Serializable {
     private String name;
     private String surname;
     private long birthDate;
