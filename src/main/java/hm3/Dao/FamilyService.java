@@ -8,7 +8,9 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FamilyService {
 
@@ -46,40 +48,31 @@ public class FamilyService {
     }
 
     public List<Family> getFamiliesBiggerThan(int number) {
-        List<Family> result = new ArrayList<>();
-
-        for (Family f : familyDao.getAllFamilies()) {
-            if (f.countFamily() > number) {
-                result.add(f);
-            }
-        }
+        List<Family> result = familyDao.getAllFamilies().stream()
+                .filter(f -> f.countFamily() > number)
+                .collect(Collectors.toList());
 
         result.forEach(f -> System.out.println(f.prettyFormat()));
         return result;
     }
+
 
     public List<Family> getFamiliesLessThan(int number) {
-        List<Family> result = new ArrayList<>();
-
-        for (Family f : familyDao.getAllFamilies()) {
-            if (f.countFamily() < number) {
-                result.add(f);
-            }
-        }
+        List<Family> result = familyDao.getAllFamilies().stream()
+                .filter(f -> f.countFamily() < number)
+                .collect(Collectors.toList());
 
         result.forEach(f -> System.out.println(f.prettyFormat()));
         return result;
     }
 
+
     public int countFamiliesWithMemberNumber(int number) {
-        int count = 0;
-
-        for (Family f : familyDao.getAllFamilies()) {
-            if (f.countFamily() == number) count++;
-        }
-
-        return count;
+        return (int) familyDao.getAllFamilies().stream()
+                .filter(f -> f.countFamily() == number)
+                .count();
     }
+
 
     public Family createNewFamily(Human mother, Human father) {
         Family family = new Family(mother, father);
@@ -131,21 +124,23 @@ public class FamilyService {
 
 
     public void deleteAllChildrenOlderThen(int age) {
-        for (Family family : familyDao.getAllFamilies()) {
+        familyDao.getAllFamilies().forEach(family -> {
 
-            Human[] children = family.getChildren();
+            Human[] filteredChildren = Arrays.stream(family.getChildren())
+                    .filter(child -> calculateAge(child) <= age)
+                    .toArray(Human[]::new);
 
-            for (int i = 0; i < children.length; i++) {
-                int childAge = calculateAge(children[i]);
-                if (childAge > age) {
-                    family.deleteChild(i);
-                    i--;
-                }
+            while (family.getChildren().length > 0) {
+                family.deleteChild(0);
             }
 
+            Arrays.stream(filteredChildren)
+                    .forEach(family::addChild);
+
             familyDao.saveFamily(family);
-        }
+        });
     }
+
 
     public int count() {
         return familyDao.getAllFamilies().size();
