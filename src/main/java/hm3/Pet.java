@@ -2,18 +2,19 @@ package hm3;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Set;
 
 public abstract class Pet {
     private Species species = Species.UNKNOWN;
     private String nickname;
     private int age;
     private int trickLevel;
-    private String[] habits;
+    private Set<String> habits;
 
     public Pet() {
     }
 
-    public Pet(Species species, String nickname, int age, int trickLevel, String[] habits) {
+    public Pet(Species species, String nickname, int age, int trickLevel, Set<String> habits) {
         this.species = species;
         this.nickname = nickname;
         this.age = age;
@@ -64,18 +65,18 @@ public abstract class Pet {
         this.trickLevel = trickLevel;
     }
 
-    public String[] getHabits() {
+    public Set<String> getHabits() {
         return habits;
     }
 
-    public void setHabits(String[] habits) {
+    public void setHabits(Set<String> habits) {
         this.habits = habits;
     }
 
     @Override
     public String toString() {
         return String.format("Pet{species='%s', nickname='%s', age=%d, trickLevel=%d, habits=%s}",
-                species, nickname, age, trickLevel, Arrays.toString(habits));
+                species, nickname, age, trickLevel, habits.toString());
     }
 
     @Override
@@ -87,13 +88,12 @@ public abstract class Pet {
                 trickLevel == pet.trickLevel &&
                 Objects.equals(species, pet.species) &&
                 Objects.equals(nickname, pet.nickname) &&
-                Arrays.equals(habits, pet.habits);
+                Objects.equals(habits, pet.habits);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(species, nickname, age, trickLevel);
-        result = 31 * result + Arrays.hashCode(habits);
+        int result = Objects.hash(species, nickname, age, trickLevel, habits);
         return result;
     }
 

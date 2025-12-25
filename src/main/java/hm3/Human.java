@@ -1,6 +1,7 @@
 package hm3;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 
 public class Human {
@@ -8,7 +9,7 @@ public class Human {
     private String surname;
     private int year;
     private int iq;
-    private String[][] schedule;
+    private Map<String, String> schedule;
     private Family family;
 
     public Human() {}
@@ -19,7 +20,7 @@ public class Human {
         this.year = year;
     }
 
-    public Human(String name, String surname, int year, int iq, String[][] schedule) {
+    public Human(String name, String surname, int year, int iq, Map<String, String> schedule) {
         this.name = name;
         this.surname = surname;
         this.year = year;
@@ -28,25 +29,32 @@ public class Human {
     }
 
     public void greetPet() {
-        if (family == null || family.getPet() == null) {
-            System.out.println("У мене немає домашнього улюбленця.");
+        if (family == null || family.getPets().isEmpty()) {
+            System.out.println("У мене немає домашніх улюбленців.");
             return;
         }
-        System.out.printf("Привіт, %s!%n", family.getPet().getNickname());
+
+        for (Pet p : family.getPets()) {
+            System.out.printf("Привіт, %s!%n", p.getNickname());
+        }
     }
 
     public void describePet() {
-        if (family == null || family.getPet() == null) {
-            System.out.println("У мене немає домашнього улюбленця.");
+        if (family == null || family.getPets().isEmpty()) {
+            System.out.println("У мене немає домашніх улюбленців.");
             return;
         }
 
-        Pet p = family.getPet();
-        String cleverness = p.getTrickLevel() > 50 ? "дуже хитрий" : "майже не хитрий";
+        for (Pet p : family.getPets()) {
+            String cleverness = p.getTrickLevel() > 50 ? "дуже хитрий" : "майже не хитрий";
 
-        System.out.printf("У мене є %s, йому %d років, він %s.%n",
-                p.getSpecies(), p.getAge(), cleverness);
+            System.out.printf(
+                    "У мене є %s, йому %d років, він %s.%n",
+                    p.getSpecies(), p.getAge(), cleverness
+            );
+        }
     }
+
 
 
     public String getName() { return name; }
@@ -61,8 +69,8 @@ public class Human {
     public int getIq() { return iq; }
     public void setIq(int iq) { this.iq = iq; }
 
-    public String[][] getSchedule() { return schedule; }
-    public void setSchedule(String[][] schedule) { this.schedule = schedule; }
+    public Map<String, String> getSchedule() { return schedule; }
+    public void setSchedule(Map<String, String> schedule) { this.schedule = schedule; }
 
     public Family getFamily() { return family; }
     public void setFamily(Family family) { this.family = family; }
@@ -70,7 +78,7 @@ public class Human {
     @Override
     public String toString() {
         return String.format("Human{name='%s', surname='%s', year=%d, iq=%d, schedule=%s}",
-                name, surname, year, iq, Arrays.deepToString(schedule));
+                name, surname, year, iq, schedule);
     }
 
     @Override
@@ -85,7 +93,7 @@ public class Human {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, year);
+        return Objects.hash(name, surname, year, schedule);
     }
 
 
