@@ -86,4 +86,10 @@ public class Family {
         result = 31 * result + Arrays.hashCode(children);
         return result;
     }
+
+    @Override
+    protected void finalize() throws Throwable {
+        System.out.println("Видаляється об'єкт Family: " + toString());
+        super.finalize();
+    }
 }
