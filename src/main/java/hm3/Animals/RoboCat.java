@@ -1,0 +1,20 @@
+package hm3.Animals;
+
+import hm3.Pet;
+import hm3.Species;
+
+public class RoboCat extends Pet implements Foulable{
+    public RoboCat(String nickname, int age, int trickLevel, String[] habits) {
+        super(Species.ROBO_CAT, nickname, age, trickLevel, habits);
+    }
+
+    @Override
+    public void respond() {
+        System.out.println("Я RoboCat " + getNickname() + ".");
+    }
+
+    @Override
+    public void foul() {
+        System.out.println("Помилка: Я не створюю безлад.");
+    }
+}
